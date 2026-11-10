@@ -1,8 +1,0 @@
-{
-  "minimum_durations": [0.3, 0.6, 0.9, 1.0, 1.2],
-  "held_out_fraction": 0.3333333333333333,
-  "split_seed": "listening-feedback-v1",
-  "minimum_calibration_positives": 2,
-  "output_directory": "data/overlap-lab/feedback-evaluation",
-  "contexts": [1.0, 3.0]
-}

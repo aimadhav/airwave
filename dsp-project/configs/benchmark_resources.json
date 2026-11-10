@@ -1,9 +1,0 @@
-{
-  "suite_config": "configs/benchmark_suite.json",
-  "repeats": 3,
-  "poll_interval_seconds": 0.05,
-  "dataset_id": "ami60",
-  "output_subdirectory": "resources",
-  "timeout_seconds": 900,
-  "notes": "Separate serial process-start measurements, three repeats per backend. Sum of process-tree RSS sampled at 50 ms, not unique physical memory. No cold-cache or p95 claim."
-}
