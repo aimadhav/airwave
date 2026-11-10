@@ -5,18 +5,17 @@ node_modules/
 *.mp3
 /.airwave-cache/
 
-# The bundled DSP project keeps runtimes, downloaded models, and recording data local.
-dsp-project/.env
-dsp-project/.env.*
-dsp-project/models/
-dsp-project/data/
-dsp-project/.venv/
-dsp-project/.runtime-deps/
-dsp-project/.test-deps/
-dsp-project/.pytest_cache/
-dsp-project/.obsidian/
-dsp-project/scratch/
-dsp-project/demos/
-dsp-project/configs/*.local.json
-dsp-project/configs/voice_profiles.json
-dsp-project/UPSC_ASSISTANT_HANDOFF.md
+# The bundled local speech service keeps runtimes, downloaded models, and audio local.
+dsp/.env
+dsp/.env.*
+dsp/models/
+dsp/data/
+dsp/.venv/
+dsp/.runtime-deps/
+dsp/.test-deps/
+dsp/.pytest_cache/
+dsp/.obsidian/
+dsp/scratch/
+dsp/demos/
+dsp/configs/*.local.json
+dsp/configs/voice_profiles.json

@@ -66,5 +66,5 @@ class NativeDiarizationConfig:
         for filename in (self.executable, self.model):
             if not Path(filename).is_file():
                 raise DiarizationConfigurationError(
-                    f"Missing native diarization asset: {filename}. See Documentation/DSP/09_Clear_Meeting_Diarization_Comparison.md."
+                    f"Missing native diarization asset: {filename}. See dsp/README.md for local setup instructions."
                 )

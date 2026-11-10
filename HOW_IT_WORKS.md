@@ -15,7 +15,6 @@ flowchart LR
   N -->|ad audio| A
   A -->|original prefix + ad + original remainder| P[Browser audio player]
 ```
-
 ## 1. Load the episode and choose a search area
 
 The browser accepts an episode file and a broad time range where an ad might fit. Airwave does not upload the full podcast to a cloud transcription provider. For local transcription, the browser sends the file to the Airwave Node server on the computer (`127.0.0.1:4175`). The server uses FFmpeg to crop only the chosen range and convert that crop to mono 16 kHz WAV.
@@ -24,7 +23,7 @@ The Airwave server then sends that crop to the DSP project's local recording ser
 
 ## 2. What the DSP project contributes
 
-The included [`dsp-project/`](dsp-project/) folder is the Python speech-processing project used by Airwave. Its local recording viewer service accepts an uploaded crop, queues processing, runs local speech recognition and speaker diarization, and exposes a transcript with timestamps and speaker turns. It is configured to listen on loopback port `5095`; it is not exposed as a public service.
+The included [`dsp/`](dsp/) folder contains the Python speech-processing component used by Airwave. Its local recording service accepts an uploaded crop, queues processing, runs local speech recognition and speaker diarization, and exposes a transcript with timestamps and speaker turns. It is configured to listen on loopback port `5095`; it is not exposed as a public service.
 
 Airwave calls the DSP service's local endpoints:
 
@@ -35,7 +34,7 @@ Airwave calls the DSP service's local endpoints:
 
 The transcript gives Airwave word/turn timing, speaker IDs, and uncertainty/overlap flags. The listener chooses which detected speaker is the host. Speaker IDs are estimates, so that choice still needs a human check.
 
-The original DSP repository contains optional model weights, runtime environments, recordings, and local processing data. This repo includes the project source, setup scripts, tests, and reusable documentation; local recordings, caches, virtual environments, and model binaries are intentionally excluded. The DSP setup script downloads the assets locally when needed.
+The `dsp/` folder contains only source and setup files required by Airwave. Recordings, caches, virtual environments, and model binaries are excluded from Git. The DSP setup script downloads the model assets locally when needed.
 
 ## 3. Find candidate moments without sending the full transcript
 
@@ -78,4 +77,4 @@ The original episode is retained, so no spoken content is cut out; the ad adds i
 
 The audio file and crop are processed by the local Airwave and DSP services. The browser caches transcript turns and the selected host speaker in IndexedDB; the local Airwave server also caches transcripts for reuse. Groq receives the small text shortlist described above. Gnani receives the generated sponsor text for TTS, and receives a voice sample only when optional voice cloning is explicitly requested. API keys are kept by the local server and are not embedded in the browser bundle.
 
-See the [main README](README.md) for setup and run instructions, and [`dsp-project/README.md`](dsp-project/README.md) for DSP setup details.
+See the [main README](README.md) for setup and run instructions, and [`dsp/README.md`](dsp/README.md) for DSP setup details.

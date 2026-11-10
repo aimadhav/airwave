@@ -2,20 +2,20 @@
 
 Airwave is a local-first hackathon prototype for context-aware podcast ads. It uses your local diarization project to find timestamped words and speaker turns, runs a bounded two-round debate between two models, then uses Gnani TTS to create and insert a sponsored continuation.
 
-**[Read how Airwave works](HOW_IT_WORKS.md)** for the complete flow, including how the bundled [`dsp-project/`](dsp-project/) provides local speech recognition and speaker diarization.
+**[Read how Airwave works](HOW_IT_WORKS.md)** for the complete flow, including how the bundled [`dsp/`](dsp/) component provides local speech recognition and speaker diarization.
 
 ## Run locally
 
 Requirements: Node.js 18 or newer. There are no npm dependencies.
 
 1. If `.env` does not exist yet, copy `.env.example` to `.env`.
-2. Set up and start the included local STT/DSP project. From `dsp-project`, create its Python runtime, install its requirements, download the local speech assets, then run `Start-Listening-Room.cmd`. See [`dsp-project/README.md`](dsp-project/README.md). It serves locally on `127.0.0.1:5095`.
+2. Set up and start the included local STT/DSP component. From `dsp`, create its Python runtime, install its requirements, download the local speech assets, then run `Start-Listening-Room.cmd`. See [`dsp/README.md`](dsp/README.md). It serves locally on `127.0.0.1:5095`.
 3. Add `GNANI_API_KEY` to enable Gnani TTS and optional voice cloning. The demo does not use Gnani STT.
 4. Add a Groq API key in **Groq API settings** in the app. The two model IDs are editable there; defaults are `openai/gpt-oss-120b` and `qwen/qwen3.8-27b`. A key entered in the UI stays in local server memory until restart. You can also set `GROQ_API_KEY` in `.env`.
 5. Run `node server.mjs` from this directory and open `http://localhost:4175`.
 6. Install FFmpeg and set `FFMPEG_PATH` in `.env` to the full path of `ffmpeg.exe` (or make `ffmpeg` available on the server's `PATH`). Airwave uses FFmpeg to crop the selected search area without decoding an entire podcast into browser memory, and to stream the ad insertion.
 
-The DSP project source, setup scripts, tests, and reusable documentation live in `dsp-project/`. Model weights, virtual environments, cached recordings, and local processing outputs stay out of Git and are downloaded or created on the machine when needed.
+The `dsp/` folder contains only the source and setup files needed by Airwave's local transcription service. Model weights, virtual environments, cached recordings, and local processing outputs stay out of Git and are downloaded or created on the machine when needed.
 
 Without API keys, the app remains usable in demo mode: its two labeled perspectives use a local relevance heuristic and sample scripts. The sample episode audio is a locally generated audio bed and is only intended to preview placement. Upload a real episode for a meaningful listening check.
 

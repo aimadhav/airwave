@@ -17,7 +17,7 @@
     studio.hidden = true;
     landing.hidden = false;
     document.body.classList.remove('studio-open');
-    document.title = 'Air Flow — Ads that flow with the conversation';
+    document.title = 'Airwave — Ads that flow with the conversation';
     if (push && location.hash !== '#landing-home') history.pushState({ view: 'landing' }, '', '#landing-home');
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
@@ -49,7 +49,7 @@
         const button = card.querySelector('.compare-play');
         if (button) {
           button.textContent = '▶';
-          button.setAttribute('aria-label', card.classList.contains('compare-airflow') ? 'Animate Air Flow demo' : 'Animate usual ad break');
+          button.setAttribute('aria-label', card.classList.contains('compare-airflow') ? 'Animate Airwave demo' : 'Animate usual ad break');
         }
       });
     }, 8000);
@@ -108,3 +108,4 @@
 
   if (location.hash === '#studio') enterStudio({ push: false });
 })();
+
