@@ -1,41 +1,218 @@
-# Airwave demo
+# airwave Demo
 
-Airwave is a local-first hackathon prototype for context-aware podcast ads. It uses your local diarization project to find timestamped words and speaker turns, runs a bounded two-round debate between two models, then uses Gnani TTS to create and insert a sponsored continuation.
+## airwave
 
-**[Read how Airwave works](HOW_IT_WORKS.md)** for the complete flow, including how the bundled [`dsp/`](dsp/) component provides local speech recognition and speaker diarization.
+airwave is an AI-powered podcast advertising system that transforms traditional ad breaks into **context-aware conversations**.
 
-## Run locally
+Instead of interrupting a podcast with a generic pre-recorded advertisement, airwave understands what the hosts are discussing and rewrites the advertisement so it naturally continues the conversation. If a podcast is talking about productivity, the ad begins from productivity. If it's about travel, the ad transitions into a travel-related message. Every advertisement remains clearly labeled as sponsored—it simply feels relevant rather than disruptive.
 
-Requirements: Node.js 18 or newer. There are no npm dependencies.
+What makes airwave unique is that **every listener can hear a different version of the same advertisement**. The advertisement is personalized based on listener interests, language, and advertiser preferences while remaining contextually aligned with the podcast. Advertisers can choose the voice used for the ad, including a licensed host voice, celebrity voice, or a default brand voice, with support for English and multiple Indian languages.
 
-1. If `.env` does not exist yet, copy `.env.example` to `.env`.
-2. Set up and start the included local STT/DSP component. From `dsp`, create its Python runtime, install its requirements, download the local speech assets, then run `Start-Listening-Room.cmd`. See [`dsp/README.md`](dsp/README.md). It serves locally on `127.0.0.1:5095`.
-3. Add `GNANI_API_KEY` to enable Gnani TTS and optional voice cloning. The demo does not use Gnani STT.
-4. Add a Groq API key in **Groq API settings** in the app. The two model IDs are editable there; defaults are `openai/gpt-oss-120b` and `qwen/qwen3.8-27b`. A key entered in the UI stays in local server memory until restart. You can also set `GROQ_API_KEY` in `.env`.
-5. Run `node server.mjs` from this directory and open `http://localhost:4175`.
-6. Install FFmpeg and set `FFMPEG_PATH` in `.env` to the full path of `ffmpeg.exe` (or make `ffmpeg` available on the server's `PATH`). Airwave uses FFmpeg to crop the selected search area without decoding an entire podcast into browser memory, and to stream the ad insertion.
+The result is advertising that feels like a continuation of the conversation instead of a break in it.
 
-The `dsp/` folder contains only the source and setup files needed by Airwave's local transcription service. Model weights, virtual environments, cached recordings, and local processing outputs stay out of Git and are downloaded or created on the machine when needed.
+📖 **[Read how airwave works](HOW_IT_WORKS.md)** for the complete architecture and processing pipeline.
 
-Without API keys, the app remains usable in demo mode: its two labeled perspectives use a local relevance heuristic and sample scripts. The sample episode audio is a locally generated audio bed and is only intended to preview placement. Upload a real episode for a meaningful listening check.
+---
 
-## What works
+# How It Works
 
-- Upload an audio file, view its waveform, and adjust a broad search area.
-- The browser reads audio metadata without decoding the whole podcast into memory. Airwave uploads the compressed file to its local server, uses FFmpeg to crop only the selected search range, then sends that crop to the local STT project (up to the service's 128 MB / 30-minute limits). Returned turns are restored to episode timestamps. Choose the host speaker once per new episode; the selection is cached with its transcript.
-- Timestamped turns for the same audio and exact search range are cached in browser IndexedDB and in `.airwave-cache/transcripts` for 30 days. The local server cache is shared across Airwave ports; it stores transcript text and the selected host speaker. Temporary episode audio used for local silence analysis and previews is kept in the server temp directory for up to one hour, then removed.
-- LLM request payloads, each actual provider prompt and response, and model retries for ad matching are saved in the browser's IndexedDB. Open **LLM request history** in the left sidebar to inspect or clear them. A local ranker sends Groq at most five diverse candidate moments with their nearby turns, not the full transcript. Local silence evidence stays on the server and is summarized as candidate features.
-- Edit listener interests and locale. Add advertiser campaigns with product facts, audience, offer, and prohibited claims; advertiser data and preferences persist in browser local storage.
-- Ask two configured text models to independently select an eligible completed host turn and advertiser, then critique both proposals. In round two, each model gets the competing draft and critique and can revise its advertiser, script, or anchor. The server validates all four proposals, resolves each turn ID to its precise end timestamp, and selects the strongest safe candidate by combined relevance, safety, naturalness, and slot-fit scores. The debate is capped at two rounds.
-- Each model receives an explicit list of eligible host-turn IDs. For uploaded episodes, failed live review is shown as an error rather than replaced with simulated demo candidates.
-- Local candidate ranking combines terminal wording, likely thought completion, question/answer risk, same-speaker continuation, turn timing, and FFmpeg silence detection when the source is available. Pause length is a ranking signal rather than a fixed eligibility cutoff. Groq sees at most five time-separated moments and their adjacent turn context.
-- Each model proposal has a **Preview this placement** control. Gnani creates that candidate's sponsor read, and FFmpeg plays a short audio excerpt before the exact insertion, the ad, then the original episode after it. The episode audio is uploaded once per scan and reused across previews; it stays in the local server temp directory for up to one hour.
-- After listening, **Start full episode with this ad** plays the continuous MP3 stream: original audio up to the selected host turn's exact end, the clearly labeled ad, then the remaining original audio. No replacement episode download is needed. The full stream is cleaned up when playback ends or the session expires.
-- The stream endpoint checks the chosen anchor against the uploaded episode's transcript, selected host speaker, and exact clean turn end before accepting it.
-- Optionally provide 5–30 seconds of your own clean speech to Gnani voice cloning. The embedding is held in server memory and can be forgotten; use requires a consent checkbox. The generated segment explicitly identifies itself as a sponsor read.
+```text
+Podcast Audio
+      │
+      ▼
+ Speech-to-Text + Speaker Diarization
+      │
+      ▼
+Conversation Understanding
+      │
+      ▼
+Find Natural Insertion Points
+      │
+      ▼
+Advertiser Selection
+      │
+      ▼
+Context-Aware Ad Generation
+      │
+      ▼
+Personalization
+(Language • Voice • Listener Interests)
+      │
+      ▼
+Text-to-Speech
+      │
+      ▼
+Seamless Audio Stitching
+      │
+      ▼
+Final Podcast Stream
+```
 
-## API notes
+### 1. Audio Understanding
 
-Gnani keys are only read by `server.mjs`. TTS is sent to `https://api.vachana.ai/api/v1/tts/inference`; optional voice embeddings use `https://api.vachana.ai/api/v1/tts/voice-clone/embeddings`. Episode audio is sent only to local services: the local STT service at `127.0.0.1:5095` for transcription and the Airwave server for local boundary analysis and preview/stream assembly. Groq receives at most five timestamped ranked host-turn moments, each with nearby transcript context, listener interests, and advertiser facts—not the full transcript or audio. Groq and Gnani calls are server-side.
+The uploaded podcast is processed using a local speech recognition pipeline that generates:
 
-Review the transcript and preview the transition: speaker IDs are estimated groups, not verified identities, so choose the correct host voice yourself. Word timing and diarization can be wrong, particularly in overlap. The cloned sponsor voice is an AI-generated read; it does not represent a real spontaneous endorsement. This prototype uses local browser storage and files held in the current browser session. It does not include accounts, a hosted database, cloud episode storage, or production ad delivery. Only clone a voice you have permission to use.
+- speaker-separated transcripts
+- timestamps
+- speaker turns
+- conversation boundaries
+
+This creates a structured representation of the episode instead of a single transcript.
+
+---
+
+### 2. Finding Natural Ad Moments
+
+airwave analyzes the conversation to identify moments where an advertisement can be inserted naturally.
+
+The ranking combines signals such as:
+
+- completed thoughts
+- sentence endings
+- speaker transitions
+- pauses
+- silence duration
+- conversational flow
+
+Instead of interrupting mid-sentence, airwave inserts ads only after meaningful conversational boundaries.
+
+---
+
+### 3. Understanding Context
+
+The surrounding conversation is analyzed to determine:
+
+- current topic
+- intent
+- entities being discussed
+- conversation flow
+
+Example:
+
+```
+Podcast
+
+Coffee
+↓
+
+Focus
+↓
+
+Productivity
+```
+
+This context becomes the foundation for generating the advertisement.
+
+---
+
+### 4. Campaign Selection
+
+airwave compares the current conversation against available advertiser campaigns.
+
+Campaigns include information such as:
+
+- product
+- audience
+- messaging
+- offers
+- brand constraints
+
+The most relevant campaign is selected for that moment.
+
+---
+
+### 5. Context-Aware Advertisement Generation
+
+Instead of inserting a fixed advertisement, airwave generates a new script that naturally continues the discussion.
+
+Example:
+
+Podcast:
+
+> "...coffee helps improve concentration..."
+
+↓
+
+Generated Advertisement:
+
+> "Speaking of staying focused..."
+
+The transition feels connected because the advertisement starts from the current topic before introducing the sponsor.
+
+---
+
+### 6. Personalization
+
+The generated advertisement is customized for each listener.
+
+Personalization can include:
+
+- interests
+- preferred language
+- preferred voice
+- advertiser targeting
+
+This means two people listening to the same podcast can hear different advertisements while the podcast itself remains unchanged.
+
+---
+
+### 7. Voice Generation
+
+The generated script is converted into speech using AI text-to-speech.
+
+Advertisers can choose:
+
+- brand voice
+- licensed host voice
+- licensed celebrity voice
+
+The same advertisement can also be generated in multiple Indian languages.
+
+---
+
+### 8. Audio Assembly
+
+airwave uses FFmpeg to assemble the final audio stream by combining:
+
+```
+Original Podcast
+        +
+Generated Advertisement
+        +
+Remaining Podcast
+```
+
+The listener hears a seamless transition from podcast to sponsored message and back to the original conversation.
+
+---
+
+# Tech Stack
+
+- **Node.js** — Backend
+- **FFmpeg** — Audio segmentation and stream assembly
+- **Local STT + Speaker Diarization** — Speech recognition and conversation segmentation
+- **Groq LLMs** — Context understanding, campaign selection, and advertisement generation
+- **Gnani TTS** — Speech synthesis and voice cloning
+- **IndexedDB** — Transcript and inference caching
+- **Browser Audio API** — Waveform visualization and playback
+
+---
+
+# Running Locally
+
+1. Copy `.env.example` to `.env`
+2. Start the local DSP/STT project
+3. Add your `GNANI_API_KEY`
+4. Add your `GROQ_API_KEY`
+5. Install FFmpeg and configure `FFMPEG_PATH`
+6. Run:
+
+```bash
+node server.mjs
+```
+
+7. Open:
+
+```
+http://localhost:4175
+```
