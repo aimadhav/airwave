@@ -1,5 +1,0 @@
-# Optional benchmark-only instrumentation. Install into models/benchmark-monitor-deps.
-# Core numerical/STT libraries are reused from the existing local model runtime.
-psutil==7.0.0
-pystoi==0.4.1
-huggingface_hub>=0.32.0
