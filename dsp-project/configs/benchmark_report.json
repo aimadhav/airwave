@@ -1,0 +1,14 @@
+{
+  "suite_config": "configs/benchmark_suite.json",
+  "report_date": "2026-11-05",
+  "output_json": "web/recording-viewer/benchmarks.json",
+  "output_markdown": "Documentation/DSP/21_Comprehensive_Audio_Benchmarks.md",
+  "site_directory": "data/sites/podcast-results",
+  "sample_asset": "benchmark-audio/ami60.wav",
+  "primary_sources": [
+    {"label":"NVIDIA AMI fixture attribution and human-reference provenance", "url":"https://github.com/NVIDIA/NeMo-Speech.cpp/blob/v0.2.0/test_files/diar/README.md"},
+    {"label":"DER and JER metric definitions (dscore)", "url":"https://github.com/nryant/dscore#iii-metrics"},
+    {"label":"Meeting transcript metrics and cpWER (MeetEval)", "url":"https://github.com/fgnt/meeteval#metrics-for-meeting-transcription-evaluation"},
+    {"label":"STOI implementation and interpretation", "url":"https://github.com/mpariente/pystoi"}
+  ]
+}

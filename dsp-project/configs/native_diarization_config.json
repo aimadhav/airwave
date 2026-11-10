@@ -1,0 +1,8 @@
+{
+  "executable": "models/nemo-native/nemo-speech-0.2.0-windows-x86_64-cpu/bin/nemo-speech.exe",
+  "model": "models/diarization/Nemotron-3-Diarization.q8_0.gguf",
+  "preset": "v3-offline",
+  "full_attention": false,
+  "max_full_attention_seconds": 390.0,
+  "timeout_seconds": 600.0
+}

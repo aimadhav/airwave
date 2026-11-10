@@ -1,0 +1,14 @@
+# Development experiment: retain shorter/quiet activity, with modest edge padding.
+dsp:
+  random_audio_provider: local_model
+  local_model:
+    backend: nemo_native
+    native:
+      preset: v3-offline
+      full_attention: false
+      onset: 0.35
+      offset: 0.2
+      pad_onset_seconds: 0.08
+      pad_offset_seconds: 0.08
+      min_duration_on: 0.08
+      min_duration_off: 0.1

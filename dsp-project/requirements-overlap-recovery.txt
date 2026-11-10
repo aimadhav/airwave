@@ -1,0 +1,6 @@
+# Install into models/separation-runtime, NOT the existing DSP environment.
+# First install torch==2.6.0 and torchaudio==2.6.0 from the official CPU index.
+speechbrain==1.0.3
+huggingface-hub==0.29.3
+numpy==2.2.6
+scipy==1.15.3

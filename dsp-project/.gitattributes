@@ -1,0 +1,4 @@
+# Preserve the exported manifest's byte hashes on every platform.
+demos/podcast-57min/** text eol=lf
+demos/podcast-57min/**/*.wav binary
+demos/podcast-57min/audio.mp3 binary

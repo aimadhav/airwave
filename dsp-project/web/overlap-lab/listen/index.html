@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quick listening review — Fieldnotes</title>
+  <meta name="description" content="Mark who you hear in short audio intervals. No transcription required.">
+  <link rel="stylesheet" href="/lab/listen/listen.css">
+</head>
+<body>
+  <header><a class="brand" href="/">fieldnotes <span>/ QUICK LISTENING</span></a><a id="lab-link" href="/lab/">Full overlap lab ↗</a><span class="private">Local only · no model run needed</span></header>
+  <main>
+    <div class="intro"><div class="eyebrow">A SMALL LISTENING CHECK, NOT HOMEWORK</div><h1>Who can you hear?</h1><p>Play a short interval. Pick what you actually hear. <strong>No transcript needed.</strong></p></div>
+    <div id="error" class="error" role="alert" hidden></div>
+    <section class="recording-card" aria-label="Recording and review progress"><div><label for="recording">YOUR RECORDING</label><select id="recording" disabled><option>Connecting…</option></select></div><div class="progress-copy"><strong id="progress-text">Loading…</strong><progress id="progress" value="0" max="12" aria-label="Starter review progress"></progress></div></section>
+    <div class="workspace">
+      <aside class="passages"><div class="section-title"><h2>Your small review set</h2><span id="set-size"></span></div><p id="sample-note">Short candidates spread through the recording. These are detector guesses, not confirmed overlaps.</p><div class="scope" role="group" aria-label="Review set"><button id="starter" class="selected" aria-pressed="true">Starter set</button><button id="all" aria-pressed="false">All candidates</button></div><div id="clip-list" class="clip-list" aria-label="Review passages"></div><p class="aside-note">You can stop whenever you like. Saved labels stay on this computer. “Not sure” is a useful answer.</p></aside>
+      <section class="review-area" aria-label="Listening review">
+        <section class="player-card"><div class="section-title"><div><div class="eyebrow" id="position">SELECT AN INTERVAL</div><h2 id="interval">Loading recording…</h2></div><span id="duration" class="pill"></span></div>
+          <div class="interval-diagram" aria-hidden="true"><span>context</span><div class="core"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><b>LABEL THIS INTERVAL</b></div><span>context</span></div>
+          <div class="play-controls"><button id="play-core" class="primary" disabled>▶ Play interval only</button><button id="play-context" class="secondary" disabled>Play with context</button><button id="pause" class="secondary" disabled>Pause</button><label for="speed">Speed <select id="speed"><option value="1">1×</option><option value="0.75">0.75×</option><option value="0.5">0.5×</option></select></label></div>
+          <p id="playback-status" class="playback-status" role="status">The main play button plays only the interval you are labelling.</p>
+          <p class="range-note">Context is optional and is <strong>not part of your answer</strong>. Answer only for the interval shown above.</p><audio id="audio" preload="metadata"></audio>
+          <details class="voice-guide"><summary>Not sure which voice belongs to which speaker number?</summary><p>These are model-estimated examples, not verified identities. You can always choose “one voice, identity unsure.”</p><div id="voice-examples"></div></details>
+        </section>
+        <section class="answer-card"><div class="section-title"><div><div class="eyebrow">YOUR LISTENING LABEL</div><h2>What happens in this interval?</h2></div><span class="pill" id="saved-state">Not labelled</span></div><p class="hint">One voice is a valid answer—even if the detector predicted two. Nothing here trains the model or changes your transcript.</p><div class="answer-replay"><button id="replay-core" class="primary" disabled>▶ Play this interval</button><span id="answer-interval"></span></div><div id="choices" class="choices" role="group" aria-label="Who do you hear?"></div><div class="save-row"><span id="save-message" role="status">Choose an answer, then save.</span><button id="save-next" class="primary" disabled>Save & next →</button></div><div class="navigation"><button id="previous" class="text-button" disabled>← Previous</button><button id="next" class="text-button" disabled>Skip for now →</button></div></section>
+        <section class="summary-card" aria-label="Saved listening labels"><div><strong id="overlap-count">0</strong><span>marked simultaneous</span></div><div><strong id="nonoverlap-count">0</strong><span>marked not overlapping</span></div><div><strong id="unsure-count">0</strong><span>other / uncertain</span></div><p>Counts are your labels on selected detector candidates—not whole-recording accuracy. Transcript reviews and WER are kept separate.</p><div class="summary-actions"><button id="reload" class="secondary" disabled>Reload saved labels</button><button id="export" class="secondary" disabled>Export listening labels ↗</button></div></section>
+      </section>
+    </div>
+  </main>
+  <script src="/lab/listen/listen.js"></script>
+</body>
+</html>

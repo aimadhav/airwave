@@ -1,0 +1,11 @@
+dsp:
+  canonical_sample_rate: 16000
+  random_audio_provider: local_model
+  local_model:
+    backend: sherpa
+    num_speakers: -1
+    cluster_threshold: 0.9
+    window_shift_ratio: 0.1
+    min_duration_on: 0.2
+    min_duration_off: 0.3
+    num_threads: 2

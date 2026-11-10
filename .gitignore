@@ -1,0 +1,22 @@
+.env
+.env.*.local
+node_modules/
+*.wav
+*.mp3
+/.airwave-cache/
+
+# The bundled DSP project keeps runtimes, downloaded models, and recording data local.
+dsp-project/.env
+dsp-project/.env.*
+dsp-project/models/
+dsp-project/data/
+dsp-project/.venv/
+dsp-project/.runtime-deps/
+dsp-project/.test-deps/
+dsp-project/.pytest_cache/
+dsp-project/.obsidian/
+dsp-project/scratch/
+dsp-project/demos/
+dsp-project/configs/*.local.json
+dsp-project/configs/voice_profiles.json
+dsp-project/UPSC_ASSISTANT_HANDOFF.md

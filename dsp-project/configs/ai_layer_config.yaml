@@ -1,0 +1,89 @@
+providers:
+  mode: "mock"  # mock | openai | gemini
+
+llm:
+  model_name: "gpt-4o"  # For Gemini: "gemini-2.0-flash"
+  temperature: 0.1
+  timeout_seconds: 30.0
+  max_retries: 3
+  api_key_env_var: "OPENAI_API_KEY"  # For Gemini: "GEMINI_API_KEY" or "GOOGLE_API_KEY"
+
+stt:
+  model_name: "whisper-1"  # For Gemini: "gemini-2.0-flash"
+  language: "en"
+  device: "cpu"
+
+local_stt:
+  encoder: "models/stt/tiny.en-encoder.int8.onnx"
+  decoder: "models/stt/tiny.en-decoder.int8.onnx"
+  tokens: "models/stt/tiny.en-tokens.txt"
+  num_threads: 2
+  max_chunk_seconds: 25.0
+
+real_audio_demo:
+  audio_path: "data/benchmarks/3-two-speakers-en.wav"
+  title: "Real English conversation · automatic speakers"
+
+embedding:
+  model_name: "text-embedding-3-small"  # For Gemini: "text-embedding-004"
+  api_key_env_var: "OPENAI_API_KEY"     # For Gemini: "GEMINI_API_KEY" or "GOOGLE_API_KEY"
+  dimensions: 1536                      # For Gemini text-embedding-004: 768
+
+database:
+  backend: "sqlite"  # sqlite | postgres
+  sqlite_path: "data/ai_layer.db"
+  connection_url_env_var: "DATABASE_URL"
+
+transcription:
+  max_pause_seconds: 1.5
+  allow_overlap: true
+
+speaker_verification:
+  min_confidence_threshold: 0.70
+  boost_per_confirmation: 0.15
+
+conversation_analysis:
+  enable_normalization: true
+  max_facts_per_session: 50
+
+knowledge_memory:
+  similarity_threshold: 0.6
+  enable_contradiction_flagging: true
+
+summarization:
+  max_highlights: 10
+  include_action_items: true
+
+query_answering:
+  retrieval_top_k: 5
+  min_relevance_score: 0.5
+  fallback_message: "The provided conversation records do not contain this information."
+
+dsp:
+  canonical_sample_rate: 16000
+  input_mode: "auto"  # auto | google_meet | audio_file
+  random_audio_provider: "single_speaker"  # mock | single_speaker | local_model
+  local_model:
+    segmentation_model: "models/diarization/sherpa-onnx-pyannote-segmentation-3-0/model.onnx"
+    embedding_model: "models/diarization/nemo_en_titanet_small.onnx"
+    num_speakers: -1  # automatic; set a known count explicitly if appropriate
+    cluster_threshold: 0.9
+    num_threads: 2
+    window_shift_ratio: 0.1
+    min_duration_on: 0.2
+    min_duration_off: 0.3
+  meet_transcript_preferred: true
+  diarization_provider: "mock"
+  speaker_matching_enabled: false
+  overlap_detection_enabled: true
+  source_separation_enabled: false
+  save_intermediate_audio: true
+  save_diagnostics: true
+  vad_frame_length_ms: 30.0
+  vad_hop_length_ms: 10.0
+  vad_threshold_db: -35.0
+  vad_min_speech_ms: 200.0
+  vad_min_silence_ms: 250.0
+  vad_adaptive_noise_floor: true
+  vad_noise_floor_percentile: 10.0
+  vad_noise_margin_db: 3.0

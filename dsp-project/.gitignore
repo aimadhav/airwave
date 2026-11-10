@@ -1,0 +1,115 @@
+# Python & Virtual Environments
+.env
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+*.env
+*.pem
+*.key
+*.cert
+
+# Audio Files & Raw Data
+# Raw recordings, sliced clips, and temporary audio files
+*.wav
+*.mp3
+*.m4a
+*.flac
+*.ogg
+*.aac
+*.opus
+*.mp4
+*.webm
+/data/
+/datasets/
+/recordings/
+/clips/
+/storage/
+/temp_audio/
+
+# Machine Learning & AI Models
+*.pt
+*.pth
+*.bin
+*.onnx
+*.safetensors
+*.ckpt
+*.gguf
+/models/
+/checkpoints/
+/weights/
+
+# Databases & Vector Stores
+*.sqlite3
+*.db
+*.sqlite
+postgres-data/
+
+# Logs & Temporary Files
+*.log
+logs/
+tmp/
+temp/
+.cache/
+.pytest_cache/
+.test-deps/
+.runtime-deps/
+.coverage
+htmlcov/
+
+# IDE & Editor Specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Obsidian Workspace State (keeps notes and plugins tracked, ignores personal window layout/cache)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache/
+
+# OS Specific
+.DS_Store
+Thumbs.db
+
+# Operator-specific paths and the explainer explicitly kept local
+/configs/*.local.json
+/Documentation/DSP/02_DSP_Complete_Pipeline_Explainer.md
+
+# Demo recordings are omitted from this source-only copy
+
+# This repository copy contains source only; demo recordings stay local.
+demos/
+
+# Personal local voice profiles and machine-specific configs.
+/configs/voice_profiles.json
+*.local.json
+

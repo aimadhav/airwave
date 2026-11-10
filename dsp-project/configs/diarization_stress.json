@@ -1,0 +1,10 @@
+{
+  "noise_snr_db": 15.0,
+  "noise_seed": 20261006,
+  "quiet_gain": 0.03,
+  "resample_rate": 48000,
+  "repeat_count": 4,
+  "annotated_audio": "data/benchmarks/annotated-meeting.wav",
+  "annotated_reference": "data/benchmarks/annotated-meeting.rttm",
+  "repeat_audio": "data/benchmarks/0-four-speakers-zh.wav"
+}

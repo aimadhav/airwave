@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio File — Speech Intelligence & Knowledge Base Platform</title>
+  <meta name="description" content="AI platform combining speech processing, speaker diarization, transcript verification, and conversation knowledge retrieval.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/web/style.css">
+  <link rel="stylesheet" href="/web/workspace.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="glow-orb glow-orb-1"></div>
+  <div class="glow-orb glow-orb-2"></div>
+  <div class="glow-orb glow-orb-3"></div>
+
+  <div class="app-layout">
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="brand">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" x2="12" y1="19" y2="22"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Audio workspace</h1>
+          <span class="brand-tagline">From sound to structured knowledge</span>
+        </div>
+      </div>
+
+      <div class="nav-controls">
+        <div class="model-select-wrapper">
+          <label for="global-model-select" class="model-select-label">AI Engine:</label>
+          <select id="global-model-select" class="nav-model-select">
+            <option value="mock">Offline analysis (no API)</option>
+            <option value="gemini">Google Gemini</option>
+            <option value="openai">OpenAI</option>
+          </select>
+        </div>
+      </div>
+    </header>
+    <div class="workspace-toolbar" aria-label="Create a session">
+      <div class="nav-controls">
+        <div class="status-pill" id="system-status-pill">
+          <span class="status-dot"></span>
+          <span id="provider-badge">Connecting...</span>
+        </div>
+        <button id="btn-record-mic" class="btn btn-record">
+          <span class="record-dot"></span>
+          Record audio
+        </button>
+        <button id="btn-generate-sample" class="btn btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Generate sample
+        </button>
+        <button id="btn-real-audio-demo" class="btn btn-secondary" title="Real English speech, neural speaker clustering, offline Whisper">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10v4M7 6v12M11 3v18M15 8v8M19 5v14M23 10v4"/></svg>
+          Real conversation demo
+        </button>
+        <button id="btn-multispeaker-demo" class="btn btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="8" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2.5 20c.6-3.2 2.5-5 5.5-5s4.9 1.8 5.5 5M12.5 20c.5-2.5 2-4 4.5-4 2.4 0 3.9 1.5 4.5 4"/>
+          </svg>
+          Synthetic fixture
+        </button>
+        <button id="btn-paste-transcript-modal" class="btn btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          Paste transcript
+        </button>
+        <button id="btn-open-ingest-modal" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" x2="12" y1="3" y2="15"/>
+          </svg>
+          Upload audio
+        </button>
+        <a class="btn btn-secondary dsp-guide-link" href="/dsp-explainer.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M9.5 9a2.6 2.6 0 1 1 4.7 1.6c-.9 1.1-2.2 1.5-2.2 3"/>
+            <path d="M12 17.2h.01"/>
+          </svg>
+          Learn the pipeline
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content Area with Sidebar & Workspace -->
+    <div class="main-container">
+      <!-- Left Sidebar: Sessions List -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>Your sessions</h2>
+          <span class="badge" id="sessions-count-badge">0</span>
+        </div>
+        <div class="search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="search" id="session-search-input" placeholder="Find a session…" aria-label="Find a session">
+        </div>
+        <div class="sessions-list" id="sessions-list-container">
+          <!-- Session items loaded dynamically -->
+          <div class="loading-state">Loading sessions...</div>
+        </div>
+      </aside>
+
+      <!-- Right Main Panel: Active Session Intelligence -->
+      <main class="content-panel">
+        <div class="session-hero" id="session-hero-banner">
+          <div class="hero-left">
+            <div class="session-category" id="hero-session-id">CONVERSATION WORKSPACE</div>
+            <h2 id="hero-session-title">Start with a conversation</h2>
+            <div class="session-meta-row">
+              <span id="hero-recorded-date">Recorded: --</span>
+              <span class="meta-dot">&bull;</span>
+              <span id="hero-turn-count">0 Turns</span>
+              <span class="meta-dot">&bull;</span>
+              <span id="hero-participants">Participants: None</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pipeline-strip" aria-label="Processing pipeline">
+          <span><b>01</b> Audio input</span><i aria-hidden="true">→</i>
+          <span><b>02</b> DSP &amp; clips</span><i aria-hidden="true">→</i>
+          <span><b>03</b> Transcript</span><i aria-hidden="true">→</i>
+          <span><b>04</b> Insights</span><i aria-hidden="true">→</i>
+          <span><b>05</b> Memory</span>
+        </div>
+        <div id="session-provenance" class="provenance-note" hidden></div>
+
+        <!-- Live Processing & Progress Tracker -->
+        <div class="processing-tracker" id="session-processing-tracker" style="display: none;">
+          <div class="tracker-header">
+            <div class="tracker-status-row">
+              <div class="tracker-live-indicator">
+                <span class="live-pulse-dot" id="tracker-pulse-dot"></span>
+                <span id="tracker-status-text">Processing Session Intelligence...</span>
+              </div>
+              <span class="tracker-percentage" id="tracker-percentage">0%</span>
+            </div>
+            <div class="progress-bar-rail">
+              <div class="progress-bar-fill" id="tracker-progress-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="stage-chips-grid" id="tracker-stage-chips">
+            <div class="stage-chip pending" id="stage-chip-transcript">
+              <span class="stage-icon">🎙️</span>
+              <span class="stage-name">Transcript</span>
+              <span class="stage-status-badge" id="badge-transcript">Waiting</span>
+            </div>
+            <div class="stage-chip pending" id="stage-chip-tasks">
+              <span class="stage-icon">✅</span>
+              <span class="stage-name">Action Items</span>
+              <span class="stage-status-badge" id="badge-tasks">Waiting</span>
+            </div>
+            <div class="stage-chip pending" id="stage-chip-decisions">
+              <span class="stage-icon">⚖️</span>
+              <span class="stage-name">Decisions</span>
+              <span class="stage-status-badge" id="badge-decisions">Waiting</span>
+            </div>
+            <div class="stage-chip pending" id="stage-chip-facts">
+              <span class="stage-icon">💡</span>
+              <span class="stage-name">Facts</span>
+              <span class="stage-status-badge" id="badge-facts">Waiting</span>
+            </div>
+            <div class="stage-chip pending" id="stage-chip-summary">
+              <span class="stage-icon">📋</span>
+              <span class="stage-name">Summary</span>
+              <span class="stage-status-badge" id="badge-summary">Waiting</span>
+            </div>
+            <div class="stage-chip pending" id="stage-chip-memory">
+              <span class="stage-icon">🧠</span>
+              <span class="stage-name">Memory Graph</span>
+              <span class="stage-status-badge" id="badge-memory">Waiting</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="content-tabs" aria-label="Session views">
+          <button class="tab-btn active" data-tab="tab-transcript" id="btn-tab-transcript">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Transcript
+          </button>
+          <button class="tab-btn" data-tab="tab-insights" id="btn-tab-insights">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            Insights
+          </button>
+          <button class="tab-btn" data-tab="tab-summary" id="btn-tab-summary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            Summary
+          </button>
+          <button class="tab-btn" data-tab="tab-ask-ai" id="btn-tab-ask-ai">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            Ask a question
+          </button>
+          <button class="tab-btn" data-tab="tab-memory" id="btn-tab-memory">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <line x1="12" y1="3" x2="12" y2="9"/>
+              <line x1="12" y1="15" x2="12" y2="21"/>
+              <line x1="4.22" y1="4.22" x2="8.46" y2="8.46"/>
+              <line x1="15.54" y1="15.54" x2="19.78" y2="19.78"/>
+              <line x1="3" y1="12" x2="9" y2="12"/>
+              <line x1="15" y1="12" x2="21" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="8.46" y2="15.54"/>
+              <line x1="15.54" y1="8.46" x2="19.78" y2="4.22"/>
+            </svg>
+            Memory
+          </button>
+        </nav>
+
+        <!-- Tab 1: Verified Transcript -->
+        <section class="tab-pane active" id="tab-transcript">
+          <div id="audio-timeline" class="audio-timeline" hidden></div>
+          <div class="section-caption"><h3>Conversation transcript</h3><span>Speaker labels · original timestamps</span></div>
+          <div class="transcript-stream" id="transcript-stream-container">
+            <div class="empty-state welcome-state"><h3>Sound is just the beginning.</h3><p>Upload a WAV file, paste a transcript, or choose Real conversation demo to explore each stage.</p><p>The real demo uses local speaker models and Whisper. The separate synthetic fixture uses generated signals and scripted words.</p></div>
+          </div>
+        </section>
+
+        <!-- Tab 2: Extracted Insights -->
+        <section class="tab-pane" id="tab-insights">
+          <div class="insights-grid">
+            <div class="insight-column">
+              <div class="column-header">
+                <h3>Agreed Decisions</h3>
+                <span class="count-chip" id="decisions-count-badge">0</span>
+              </div>
+              <div class="cards-list" id="decisions-cards-container">
+                <div class="empty-state">No decisions extracted yet.</div>
+              </div>
+            </div>
+
+            <div class="insight-column">
+              <div class="column-header">
+                <h3>Action Items &amp; Tasks</h3>
+                <span class="count-chip" id="tasks-count-badge">0</span>
+              </div>
+              <div class="cards-list" id="tasks-cards-container">
+                <div class="empty-state">No action items extracted yet.</div>
+              </div>
+            </div>
+
+            <div class="insight-column">
+              <div class="column-header">
+                <h3>Factual Statements</h3>
+                <span class="count-chip" id="facts-count-badge">0</span>
+              </div>
+              <div class="cards-list" id="facts-cards-container">
+                <div class="empty-state">No facts extracted yet.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 3: Executive Summary -->
+        <section class="tab-pane" id="tab-summary">
+          <div class="summary-card">
+            <h3>Meeting Overview</h3>
+            <p id="summary-overview-text">Select a session to see its synthesized summary narrative.</p>
+
+            <h3 style="margin-top: 1.5rem;">Discussion Highlights</h3>
+            <ul class="highlights-list" id="summary-highlights-list">
+              <li>No highlights available.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Tab 4: Ask AI / RAG Query Answering -->
+        <section class="tab-pane" id="tab-ask-ai">
+          <div class="chat-container">
+            <div class="chat-scope-bar">
+              <div class="scope-toggle-group">
+                <span class="scope-label">Query Scope:</span>
+                <button type="button" class="scope-btn active" id="btn-scope-current" data-scope="current">
+                  📌 Active Session
+                </button>
+                <button type="button" class="scope-btn" id="btn-scope-workspace" data-scope="workspace">
+                  🌐 All Recorded Meetings
+                </button>
+              </div>
+              <div class="chat-engine-badge" id="chat-engine-badge">
+                AI Engine: <strong id="chat-active-engine">GEMINI</strong>
+              </div>
+            </div>
+
+            <div class="chat-quick-suggestions">
+              <button type="button" class="suggestion-pill" data-query="What decisions were agreed upon?">Decisions</button>
+              <button type="button" class="suggestion-pill" data-query="What are the pending action items, assignees, and deadlines?">Tasks &amp; deadlines</button>
+              <button type="button" class="suggestion-pill" data-query="What did the team discuss regarding the roadmap and launch?">Roadmap &amp; launch</button>
+              <button type="button" class="suggestion-pill" data-query="What factual statements were confirmed?">Extracted statements</button>
+            </div>
+
+            <div class="chat-history" id="chat-history-container">
+              <div class="chat-message bot">
+                <div class="chat-avatar">AI</div>
+                <div class="chat-bubble">
+                  <p>Ask about decisions, tasks or statements in the stored conversations. Choose this session or the whole workspace above. Answers depend on the available evidence; offline fixture answers are not real AI inference.</p>
+                </div>
+              </div>
+            </div>
+
+            <form class="chat-input-bar" id="chat-query-form">
+              <input type="text" id="chat-query-input" placeholder="What did we decide about the launch date?" aria-label="Your question about the conversation" required>
+              <button type="submit" id="btn-send-query" class="btn btn-primary">
+                Ask Memory
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- Tab 5: Knowledge Graph & Memory Evolution -->
+        <section class="tab-pane" id="tab-memory">
+          <div class="section-caption"><h3>Workspace memory · all sessions</h3><span>Stored records are extracted claims, not independently verified truths.</span></div>
+          <p class="memory-source-note">This view includes older fixture sessions. Their stored results are preserved; use transcript citations and the session’s provenance to judge each record.</p>
+          <div class="memory-container">
+            <div class="memory-stats-grid">
+              <div class="memory-stat-card">
+                <div class="stat-number" id="mem-stat-total-records">0</div>
+                <div class="stat-title">Knowledge Records</div>
+              </div>
+              <div class="memory-stat-card">
+                <div class="stat-number" id="mem-stat-active-records">0</div>
+                <div class="stat-title">Active records</div>
+              </div>
+              <div class="memory-stat-card">
+                <div class="stat-number" id="mem-stat-superseded">0</div>
+                <div class="stat-title">Superseded / Updated</div>
+              </div>
+              <div class="memory-stat-card">
+                <div class="stat-number" id="mem-stat-relationships">0</div>
+                <div class="stat-title">Graph Edges</div>
+              </div>
+            </div>
+
+            <div class="memory-sections-grid">
+              <div class="memory-section-panel">
+                <div class="column-header">
+                  <h3>🧠 Knowledge Graph Evolution</h3>
+                  <button type="button" class="btn btn-sm btn-ghost" id="btn-refresh-memory">⟳ Refresh</button>
+                </div>
+                <div class="memory-records-list" id="memory-records-container">
+                  <div class="empty-state">Loading knowledge records...</div>
+                </div>
+              </div>
+
+              <div class="memory-section-panel">
+                <div class="column-header">
+                  <h3>📜 Audit &amp; Evolution Change Log</h3>
+                </div>
+                <div class="memory-log-list" id="memory-log-container">
+                  <div class="empty-state">No recorded changes yet.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Ingest Audio Modal -->
+  <div class="modal-overlay" id="ingest-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="ingest-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="ingest-modal-title">Add a conversation</h3>
+        <button class="modal-close-btn" id="btn-close-modal" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <!-- Source Selection Tabs -->
+      <div class="modal-source-tabs">
+        <button type="button" class="source-tab active" data-source="source-upload">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" x2="12" y1="3" y2="15"/>
+          </svg>
+          Upload Audio
+        </button>
+        <button type="button" class="source-tab" data-source="source-mic">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          </svg>
+          Record Live Mic
+        </button>
+        <button type="button" class="source-tab" data-source="source-url">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+          </svg>
+          Fetch URL
+        </button>
+        <button type="button" class="source-tab" data-source="source-path">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+          </svg>
+          Server File
+        </button>
+        <button type="button" class="source-tab" data-source="source-transcript">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          Paste Transcript
+        </button>
+      </div>
+
+      <form id="ingest-form">
+        <!-- 1. Upload File Pane -->
+        <div class="source-pane active" id="source-upload">
+          <div class="dropzone" id="audio-dropzone" role="button" tabindex="0" aria-label="Choose an audio file">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" x2="12" y1="3" y2="15"/>
+            </svg>
+            <p>Drag and drop your audio file here, or <span class="browse-link">browse</span></p>
+            <small>Supports .wav, .mp3, .m4a, .webm, .ogg (up to 25 MB)</small>
+            <input type="file" id="file-input" accept="audio/*,.wav,.mp3,.m4a,.webm,.ogg" style="display: none;">
+          </div>
+          <div class="selected-file-indicator" id="selected-file-indicator" style="display: none;">
+            <span class="file-name" id="file-name-label"></span>
+            <button type="button" class="btn-clear-file" id="btn-clear-file">&times;</button>
+          </div>
+        </div>
+
+        <!-- 2. Live Mic Recording Pane -->
+        <div class="source-pane" id="source-mic">
+          <div class="mic-recorder-box">
+            <div class="mic-visualizer" id="mic-visualizer">
+              <span class="v-bar"></span><span class="v-bar"></span><span class="v-bar"></span>
+              <span class="v-bar"></span><span class="v-bar"></span><span class="v-bar"></span>
+              <span class="v-bar"></span><span class="v-bar"></span><span class="v-bar"></span>
+            </div>
+            <div class="timer-display" id="record-timer">00:00</div>
+            <div class="mic-controls">
+              <button type="button" class="btn btn-record" id="btn-start-record">
+                <span class="record-dot"></span> Start Recording
+              </button>
+              <button type="button" class="btn btn-secondary" id="btn-stop-record" disabled>
+                Stop &amp; Ready
+              </button>
+            </div>
+            <small class="mic-status-hint" id="mic-status-hint">Click Start to record from your microphone.</small>
+          </div>
+        </div>
+
+        <!-- 3. Fetch from URL Pane -->
+        <div class="source-pane" id="source-url">
+          <div class="form-group">
+            <label for="ingest-url-input">Public Audio URL (.mp3 / .wav):</label>
+            <input type="url" id="ingest-url-input" placeholder="https://example.com/audio/meeting.mp3">
+            <small>Download and transcribe remote audio streams directly.</small>
+          </div>
+        </div>
+
+        <!-- 4. Server Path Pane -->
+        <div class="source-pane" id="source-path">
+          <div class="form-group">
+            <label for="ingest-file-path">Audio File Name / Path on server:</label>
+            <input type="text" id="ingest-file-path" value="real_speech_meeting.wav">
+            <small>Files located in project root e.g. real_speech_meeting.wav, sample_meeting.wav</small>
+          </div>
+        </div>
+
+        <!-- 5. Paste Transcript Pane -->
+        <div class="source-pane" id="source-transcript">
+          <div class="form-group">
+            <div class="transcript-pane-header">
+              <label for="ingest-transcript-text">Direct Transcript Input (STT Bypass):</label>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-paste-sample-transcript">
+                Paste Sample Transcript
+              </button>
+            </div>
+            <textarea id="ingest-transcript-text" rows="8" placeholder="Paste your conversation transcript here...&#10;&#10;e.g.&#10;Sarah: Let's finalize the Q4 roadmap by next Monday.&#10;Alex: I've completed the database migration and verified tests.&#10;David: I will review the API security checklist by Friday 5 PM."></textarea>
+            <div class="transcript-hints">
+              <span class="badge-hint">Dialogue: Speaker: Text</span>
+              <span class="badge-hint">Timestamps: [00:15] Speaker: Text</span>
+              <span class="badge-hint">Subtitles: SRT / WebVTT</span>
+              <span class="badge-hint">JSON Turn Array</span>
+            </div>
+            <small style="margin-top: 6px; display: block; color: var(--text-muted);">Directly feeds the Main Analyzer layer for speaker attribution, facts, decisions, action items, and summaries without audio STT.</small>
+          </div>
+        </div>
+
+        <!-- Common Options -->
+        <div class="form-group">
+          <label for="ingest-dsp-provider">Speaker detection</label>
+          <select id="ingest-dsp-provider">
+            <option value="local_model">Real multi-speaker · local CPU model</option>
+            <option value="single_speaker">Energy VAD only · one anonymous label</option>
+          </select>
+          <small>Local mode detects speaker changes. Offline analysis uses local Whisper for real words; paid AI engines use their configured STT.</small>
+        </div>
+        <div class="form-group">
+          <label for="ingest-speaker-count">Number of speakers (optional)</label>
+          <input id="ingest-speaker-count" type="number" min="1" max="16" placeholder="Leave blank for automatic detection">
+          <small>Only enter a count if you genuinely know it. Labels stay anonymous; overlapping audio is not separated.</small>
+        </div>
+        <div class="form-group" style="margin-top: 16px;">
+          <label for="ingest-session-title">Session / Meeting Title:</label>
+          <input type="text" id="ingest-session-title" value="Executive Strategy Sync" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ingest-provider-mode">Inference Mode / AI Engine:</label>
+          <select id="ingest-provider-mode">
+            <option value="mock">Offline analysis · local Whisper with real speaker mode</option>
+            <option value="gemini">Google Gemini · API key required</option>
+            <option value="openai">OpenAI · API key required</option>
+          </select>
+          <small id="provider-mode-hint" style="color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; display: block;">
+            Processes spoken audio clips directly using Gemini native multimodal audio + text extraction.
+          </small>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-ingest">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-ingest">Process &amp; Ingest Meeting</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="workspace-notice" class="workspace-notice" role="status" aria-live="polite" hidden></div>
+  <script src="/web/app.js"></script>
+</body>
+</html>

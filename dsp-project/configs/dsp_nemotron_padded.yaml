@@ -1,0 +1,14 @@
+# Development experiment: moderate activity thresholds and less clipped word edges.
+dsp:
+  random_audio_provider: local_model
+  local_model:
+    backend: nemo_native
+    native:
+      preset: v3-offline
+      full_attention: false
+      onset: 0.5
+      offset: 0.3
+      pad_onset_seconds: 0.1
+      pad_offset_seconds: 0.1
+      min_duration_on: 0.08
+      min_duration_off: 0.1

@@ -1,0 +1,13 @@
+{
+  "max_upload_bytes": 134217728,
+  "max_pending_jobs": 4,
+  "request_timeout_seconds": 60,
+  "processing_timeout_seconds": 1800,
+  "max_audio_seconds": 1800,
+  "poll_interval_ms": 1500,
+  "local_app_url": "http://127.0.0.1:5095/",
+  "python_executable": "models/dsp-test-runtime/Scripts/python.exe",
+  "base_config": "configs/recording_viewer.json",
+  "upload_directory": "data/listening-room/uploads",
+  "allowed_extensions": [".mp3", ".wav", ".m4a", ".mp4", ".flac", ".ogg", ".webm"]
+}

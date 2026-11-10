@@ -1,0 +1,23 @@
+{
+  "model_repository": "Systran/faster-whisper-base.en",
+  "model_directory": "models/stt/faster-whisper-base.en",
+  "model_revision": "3d3d5dee26484f91867d81cb899cfcf72b96be6c",
+  "device": "cpu",
+  "compute_type": "int8",
+  "cpu_threads": 4,
+  "beam_size": 5,
+  "vad_filter": false,
+  "condition_on_previous_text": false,
+  "maximum_no_speech_probability": 0.6,
+  "minimum_segment_log_probability": -1.0,
+  "maximum_compression_ratio": 2.4,
+  "language": "en",
+  "minimum_word_coverage": 0.5,
+  "recovery_config": "configs/overlap_recovery.json",
+  "default_backend": "nemo_native",
+  "waveform_bins": 360,
+  "decode_timeout_seconds": 180,
+  "session_id": "sample_session",
+  "output_directory": "data/listening-room/sample-podcast",
+  "source": "data/recordings/input.wav"
+}

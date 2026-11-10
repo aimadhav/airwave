@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Fieldnotes — upload a conversation</title>
+  <link rel="stylesheet" href="viewer.css"><link rel="stylesheet" href="upload.css">
+</head>
+<body>
+  <header class="masthead"><a class="brand" href="/">fieldnotes</a><span class="private">Private · local processing</span></header>
+  <main class="shell">
+    <section class="about">
+      <div class="eyebrow">YOUR LOCAL LISTENING ROOM</div>
+      <h1>Start with a conversation.</h1>
+      <p>Upload audio to see estimated speaker turns, a timestamped transcript, and overlapping voices on separate rows.</p>
+      <button id="new-recording" class="button new-recording">Upload a recording →</button>
+      <p>No recording has been processed yet. Audio stays on this computer. Local speech models must be installed before processing; this page does not download them.</p>
+    </section>
+  </main>
+  <dialog id="upload-dialog" aria-labelledby="upload-title">
+    <div class="upload-heading"><div><div class="eyebrow">A NEW CONVERSATION</div><h2 id="upload-title">Choose a recording.</h2></div><button id="upload-close" class="icon-button" aria-label="Close upload dialog">×</button></div>
+    <p class="upload-intro">Detect speaker turns and transcribe on this computer, without cloud uploads.</p>
+    <section id="upload-offline" hidden><p>Start the local server to process recordings.</p><a id="upload-open-app" class="button new-recording">Open the local app ↗</a></section>
+    <form id="upload-form" hidden>
+      <label class="upload-dropzone" for="recording-file"><span class="upload-symbol">↑</span><strong>Choose an audio or meeting recording</strong><span id="upload-types">Checking supported formats…</span><input id="recording-file" type="file" aria-label="Choose a new recording"></label>
+      <p id="upload-selected" class="upload-selected">No file selected</p>
+      <p class="upload-help">English recognition · estimated speaker labels · experimental overlap recovery.</p>
+      <div id="upload-progress-box" hidden><progress id="upload-progress" aria-label="Recording processing"></progress><p id="upload-status" role="status" aria-live="polite"></p></div>
+      <p id="upload-error" class="upload-error" role="alert" hidden></p>
+      <div class="upload-actions"><span>Only sent to your local app.</span><button id="upload-submit" type="submit" class="button new-recording" disabled>Process recording →</button></div>
+    </form>
+  </dialog>
+  <script id="recording-data" type="application/json">__RECORDING_DATA__</script>
+  <script src="upload.js"></script>
+</body>
+</html>

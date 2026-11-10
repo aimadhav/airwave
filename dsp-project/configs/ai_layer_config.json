@@ -1,0 +1,72 @@
+{
+  "providers": {
+    "mode": "mock"
+  },
+  "llm": {
+    "model_name": "gpt-4o",
+    "temperature": 0.1,
+    "timeout_seconds": 30.0,
+    "max_retries": 3,
+    "api_key_env_var": "OPENAI_API_KEY"
+  },
+  "stt": {
+    "model_name": "whisper-1",
+    "language": "en",
+    "device": "cpu"
+  },
+  "embedding": {
+    "model_name": "text-embedding-3-small",
+    "api_key_env_var": "OPENAI_API_KEY",
+    "dimensions": 1536
+  },
+  "database": {
+    "backend": "sqlite",
+    "sqlite_path": "data/ai_layer.db",
+    "connection_url_env_var": "DATABASE_URL"
+  },
+  "transcription": {
+    "max_pause_seconds": 1.5,
+    "allow_overlap": true
+  },
+  "speaker_verification": {
+    "min_confidence_threshold": 0.7,
+    "boost_per_confirmation": 0.15
+  },
+  "conversation_analysis": {
+    "enable_normalization": true,
+    "max_facts_per_session": 50
+  },
+  "knowledge_memory": {
+    "similarity_threshold": 0.6,
+    "enable_contradiction_flagging": true
+  },
+  "summarization": {
+    "max_highlights": 10,
+    "include_action_items": true
+  },
+  "query_answering": {
+    "retrieval_top_k": 5,
+    "min_relevance_score": 0.5,
+    "fallback_message": "The provided conversation records do not contain this information."
+  },
+  "dsp": {
+    "canonical_sample_rate": 16000,
+    "input_mode": "auto",
+    "random_audio_provider": "single_speaker",
+    "meet_transcript_preferred": true,
+    "diarization_provider": "mock",
+    "speaker_matching_enabled": false,
+    "overlap_detection_enabled": true,
+    "source_separation_enabled": false,
+    "save_intermediate_audio": true,
+    "save_diagnostics": true,
+    "vad_frame_length_ms": 30.0,
+    "vad_hop_length_ms": 10.0,
+    "vad_threshold_db": -35.0,
+    "vad_min_speech_ms": 200.0,
+    "vad_min_silence_ms": 250.0,
+    "vad_adaptive_noise_floor": true,
+    "vad_noise_floor_percentile": 10.0,
+    "vad_noise_margin_db": 3.0
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "storage_directory": "data/overlap-lab",
+  "python_executable": "models/dsp-test-runtime/Scripts/python.exe",
+  "viewer_config": "configs/recording_viewer.json",
+  "recovery_config": "configs/overlap_recovery.json",
+  "request_limit_bytes": 131072,
+  "request_timeout_seconds": 30,
+  "max_clip_seconds": 6,
+  "max_context_seconds": 3,
+  "default_context_seconds": 1,
+  "job_timeout_seconds": 600,
+  "poll_interval_ms": 1500,
+  "max_pending_jobs": 2,
+  "max_history": 20,
+  "max_annotations": 100,
+  "max_reference_characters": 8000,
+  "max_reference_words": 500,
+  "listening_sample_size": 12,
+  "listening_minimum_seconds": 0.6,
+  "listening_voice_seconds": 3,
+  "models": [
+    {"id": "base", "label": "Whisper base.en", "directory": "models/stt/faster-whisper-base.en", "repository": "Systran/faster-whisper-base.en"},
+    {"id": "small", "label": "Whisper small.en", "directory": "models/stt/faster-whisper-small.en", "repository": "Systran/faster-whisper-small.en"}
+  ],
+  "separators": [
+    {"id": "sepformer", "label": "SepFormer · 8 kHz", "provider": "local_sepformer"},
+    {"id": "mossformer", "label": "MossFormer2 · 16 kHz", "provider": "not_connected"}
+  ]
+}

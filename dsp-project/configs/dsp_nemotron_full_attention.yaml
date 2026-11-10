@@ -1,0 +1,13 @@
+# Short-file experiment only; longer recordings must use the chunked preset.
+dsp:
+  random_audio_provider: local_model
+  local_model:
+    backend: nemo_native
+    num_speakers: -1
+    native:
+      preset: v3-offline
+      full_attention: true
+      max_full_attention_seconds: 390.0
+      timeout_seconds: 600.0
+      onset: 0.5
+      offset: 0.3

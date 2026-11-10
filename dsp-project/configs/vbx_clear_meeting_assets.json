@@ -1,0 +1,7 @@
+{
+  "timeout_seconds": 60,
+  "assets": [
+    {"group":"samples","path":"data/benchmarks/vbx-es2005a/ES2005a.source.wav","url":"https://raw.githubusercontent.com/BUTSpeechFIT/VBx/57466e6e245d5cdfe2e88ee6503702ace3ffdd03/example/audios/16k/ES2005a.wav","sha256":"ac33e7b18ae72931e65dc279af4b129370ad62ca6ed64299b9e35f356e3f8ed8"},
+    {"group":"samples","path":"data/benchmarks/vbx-es2005a/ES2005a.source.rttm","url":"https://raw.githubusercontent.com/BUTSpeechFIT/VBx/57466e6e245d5cdfe2e88ee6503702ace3ffdd03/example/rttm/ES2005a.rttm","sha256":"0f77adf1dc7a241256184234453b7872fcd3ffec2d8b74a6c17ee4eb4ab89b75"}
+  ]
+}

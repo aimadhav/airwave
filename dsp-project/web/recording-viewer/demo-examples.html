@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Podcast DSP results — read-only demonstration</title>
+  <link rel="stylesheet" href="viewer.css">
+  <style>
+    .shell{max-width:1100px;padding-bottom:60px}.report-intro{max-width:850px;line-height:1.8}.report-intro h1{font-size:38px}.report-intro p{color:#655e72}.report-card{margin:25px 0;padding:25px;border:1px solid var(--line);border-radius:9px;background:white}.report-card h2{margin:0 0 12px;font-size:21px;font-weight:500}.report-card h3{font-size:15px}.report-card p{line-height:1.8;color:#655e72}.report-card table{width:100%;border-collapse:collapse;margin:15px 0;font-size:13px}.report-card th,.report-card td{text-align:left;border-bottom:1px solid var(--line);padding:12px 9px;line-height:1.5}.report-card th{color:#675784}.report-card audio{width:100%;height:40px}.track-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.track-box{background:#f8f7fb;border:1px solid var(--line);border-radius:7px;padding:15px}.track-box p{min-height:40px;overflow-wrap:anywhere}.scope-note{padding:12px;background:#f2f0f7;border-radius:6px;font-size:12px}.gate{font-size:12px;color:#7a5b34}.report-links{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}@media(max-width:700px){.shell{padding:25px 18px}.track-grid{grid-template-columns:1fr}.report-card{padding:18px}.report-card table{font-size:11px}.masthead{height:auto;min-height:70px;gap:12px;flex-wrap:wrap;padding:15px}.report-intro h1{font-size:30px}}
+  </style>
+</head>
+<body>
+  <header class="masthead"><a class="brand" href="index.html">fieldnotes / RESULTS</a><span class="private">Read-only shared demo · no model setup</span></header>
+  <main class="shell">
+    <section class="report-intro"><div class="eyebrow">A SAVED EXPERIMENT, NOT A LIVE SERVICE</div><h1>One podcast. Inspectable results.</h1><p id="recording-summary"></p><div class="report-links"><a class="button" href="index.html">Full interactive transcript →</a><a class="button" href="audio.mp3" download>Download full MP3</a><a class="button" href="TRANSCRIPT.md">Full text transcript</a><a class="button" href="results.json">Results JSON</a></div><p>Speaker labels and words are estimates. Full-recording results and the later gain-fix clip experiment are different snapshots; neither is a claim of perfect transcription.</p></section>
+    <section class="report-card"><h2>What ran on the whole recording?</h2><p>The default transcript view uses the original Nemotron timeline. The older overlap-recovery snapshot is retained for comparison, not presented as a new full-recording run after the gain fix.</p><div id="full-results"></div></section>
+    <section class="report-card"><h2>What changed after correcting separator gain?</h2><p>A small listening review found 3 true overlaps and 9 non-overlap controls among 12 detected candidates. Gate acceptance measures automatic checks, not word accuracy.</p><div id="gain-results"></div><p>The three-second context diagnostic tested only the three true overlaps. Its false-acceptance rate was not measured. These results do not establish recording-wide accuracy or missed-overlap rate.</p></section>
+    <section aria-labelledby="examples-title"><h2 id="examples-title">Listen to the three corrected examples</h2><p>Original mixture and separated tracks cover the same samples. Displayed hypotheses cover only the scoring core; context outside it can contain additional speech. Faint voice leakage can remain.</p><div id="examples"></div></section>
+    <footer class="report-card"><h2>Limitations and attribution</h2><p>Anonymous voice groups are not verified people. Overlap detection has false alarms, recognition can miss or invent words, and separated tracks can contain leakage. Rejected examples remain visible instead of being described as successfully recovered speech.</p><p>This bundle is a frozen demonstration, not an upload server. It needs no API key and makes no calls to a localhost backend. Podcast ownership remains with its rights holders; the source-code license does not grant rights to the audio.</p></footer>
+  </main>
+  <script id="demo-data" type="application/json">__RECORDING_DATA__</script>
+  <script src="demo-examples.js"></script>
+</body>
+</html>

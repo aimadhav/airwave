@@ -1,0 +1,50 @@
+{
+  "timeout_seconds": 120,
+  "assets": [
+    {
+      "group": "native",
+      "path": "models/diarization/Nemotron-3-Diarization.q8_0.gguf",
+      "url": "https://huggingface.co/nvidia/Nemotron-3-Diarization/resolve/f667ed73aee57d40cc39428eb768b4fd87a0a29e/Nemotron-3-Diarization.q8_0.gguf",
+      "sha256": "08456d9e22cd9a323c0364d98375f3746d6e68507ebb705cd46438c534c7a3a1"
+    },
+    {
+      "group": "native",
+      "path": "models/nemo-native/nemo-speech-0.2.0-windows-x86_64-cpu.zip",
+      "url": "https://github.com/NVIDIA/NeMo-Speech.cpp/releases/download/v0.2.0/nemo-speech-0.2.0-windows-x86_64-cpu.zip",
+      "sha256": "82c80451086e86194aba9af19f800da77cd66d1c28d993d0efceffd6cdb49bb8",
+      "extract_zip_members": [
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/nemo-speech.exe",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/nemo_speech_asr.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/nemo_speech_asr_c.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/nemo_speech_nmt.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/nemo_speech_nmt_c.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/nemo_speech_tts.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/ggml.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/ggml-base.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/ggml-cpu.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/llama.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/msvcp140.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/msvcp140_1.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/msvcp140_2.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/msvcp140_atomic_wait.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/msvcp140_codecvt_ids.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/vcruntime140.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/vcruntime140_1.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/vcomp140.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/bin/concrt140.dll",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/LICENSE",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/NOTICE",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/THIRD_PARTY_NOTICES.md",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/third_party/ggml/LICENSE",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/third_party/llama.cpp/LICENSE",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/third_party/miniaudio/LICENSE",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/third_party/cpp-httplib/LICENSE",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/third_party/vcpkg/abseil/LICENSE",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/third_party/vcpkg/protobuf/LICENSE",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/third_party/vcpkg/sentencepiece/LICENSE",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/licenses/nemo-speech/third_party/vcpkg/utf8-range/LICENSE",
+        "nemo-speech-0.2.0-windows-x86_64-cpu/share/nemo-speech/model-index.json"
+      ]
+    }
+  ]
+}

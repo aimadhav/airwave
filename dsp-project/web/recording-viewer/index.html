@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fieldnotes — your conversation, transcribed</title>
+  <meta name="description" content="A private listening room with timestamped speech, estimated speaker labels and stacked overlapping voices.">
+  <link rel="stylesheet" href="viewer.css">
+  <link rel="stylesheet" href="upload.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="#top" aria-label="Fieldnotes home"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="7" fill="#4a438b"/><path d="M7 11v4m4-8v12m4-10v8m4-5v2" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>fieldnotes<span class="brand-divider"></span><span class="brand-caption">LISTENING ROOM</span></a>
+    <div class="masthead-actions"><span class="private"><span></span>Local & private</span><button class="button new-recording" id="new-recording">＋ New recording</button><button class="button export" id="export">↓ Export transcript</button></div>
+  </header>
+  <main id="top" class="shell">
+    <section class="intro">
+      <div class="eyebrow"><span class="tiny-disc">◉</span> YOUR RECORDING, MADE READABLE</div>
+      <div class="intro-line"><div><h1>The conversation<span>.</span></h1><p class="filename" id="filename">Loading recording…</p></div><div class="recording-stats"><div><strong id="duration-stat">—</strong><span>DURATION</span></div><div><strong id="voices-stat">—</strong><span>VOICE GROUPS</span></div><div><strong id="words-stat">—</strong><span>WORDS</span></div></div></div>
+      <div class="honesty-note"><span aria-hidden="true">ⓘ</span><p>Speaker labels are acoustic estimates, not verified identities. Stacked rows show overlapping turns. Unclear words stay marked—not guessed.</p><button id="about-toggle" class="text-button" aria-expanded="false">How to read this ↗</button></div>
+      <section id="about" class="about" hidden><h2>A transcript, not a perfect record.</h2><p id="processing-notice"></p><p>Nemotron estimates who is active. Experimental overlap recovery separates two voices, transcribes them independently and matches them against clean voice references. Only clips passing the signal, identity and recognition gates replace mixed-audio words. “Separated · review” is not a guarantee of correct words. Failed checks retain the uncertain baseline. Three simultaneous voices and speakers without enough clean reference audio remain unresolved.</p><p>Click any timestamp to check the original. Voice numbers can change between models and are not real names. Neither timeline has been checked against human speaker labels for this recording.</p><p id="recovery-summary"></p><details id="recovery-details" hidden><summary>Overlap recovery decisions</summary><ul id="recovery-decisions"></ul></details></section>
+    </section>
+    <div class="workspace">
+      <aside class="sidebar">
+        <div class="section-label">THE VOICES <span id="voice-count"></span></div>
+        <button class="all-voices selected" id="all-voices"><span class="all-icon">☷</span> Everyone <span>↗</span></button>
+        <div id="speakers" class="speaker-list"></div>
+        <div class="sidebar-divider"></div>
+        <label class="section-label" for="model">SPEAKER TIMELINE</label>
+        <select id="model"><option value="nemo_native">Nemotron · original transcript</option><option value="sherpa">Sherpa · comparison</option></select>
+        <p class="sidebar-note">Voice numbers can change between models. They do not identify real people.</p>
+        <div class="legend-card"><div class="legend-mark"><span></span><span></span></div><h3>Two voices at once?</h3><p>They sit one below the other, inside the same passage. Each row keeps its own time range.</p><button id="first-overlap" class="text-button">Find an overlap →</button></div>
+        <div class="sidebar-foot"><span class="lock-icon">▣</span> Processed on this computer.<br>No cloud transcription.</div>
+      </aside>
+      <section class="conversation" aria-label="Speaker-labelled transcript">
+        <div class="transcript-tools"><div class="view-tabs"><button id="all-tab" class="active">Full conversation</button><button id="overlap-tab">Overlaps <span id="overlap-count">0</span></button></div><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Find a word or phrase" aria-label="Search transcript"><kbd>/</kbd></label></div>
+        <div class="transcript-subhead"><span id="result-count" aria-live="polite">Preparing transcript…</span><label class="follow-label"><input type="checkbox" id="follow"> Follow playback</label></div>
+        <div id="transcript" class="transcript"></div>
+        <p id="empty" class="empty" hidden>No matching turns. Try another phrase or clear the filters.</p>
+        <footer class="transcript-footer"><span class="end-line"></span><span>END OF RECORDING</span><span class="end-line"></span></footer>
+      </section>
+    </div>
+  </main>
+  <section class="player" aria-label="Audio playback">
+    <div class="player-inner"><div class="player-record"><span class="disc-art"><span></span></span><div><strong>Original recording</strong><span id="now-speaking">Ready when you are</span></div></div><div class="transport"><button id="back" class="icon-button" aria-label="Back 10 seconds">↶<small>10</small></button><button id="play" class="play" aria-label="Play recording">▶</button><button id="forward" class="icon-button" aria-label="Forward 10 seconds">↷<small>10</small></button></div><div class="waveform-container"><div id="waveform" class="waveform" role="slider" tabindex="0" aria-label="Recording position" aria-valuemin="0" aria-valuenow="0"></div><div class="time-line"><span id="current">0:00</span><span id="total">—</span></div></div><label class="speed-label"><span class="sr-only">Playback speed</span><select id="speed"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label></div>
+    <audio id="audio" preload="metadata"></audio>
+  </section>
+  <script id="recording-data" type="application/json">__RECORDING_DATA__</script>
+  <script src="viewer.js"></script>
+  <dialog id="upload-dialog" aria-labelledby="upload-title">
+    <div class="upload-heading"><div><div class="eyebrow">A NEW CONVERSATION</div><h2 id="upload-title">Bring another voice in.</h2></div><button id="upload-close" class="icon-button" aria-label="Close upload dialog">×</button></div>
+    <p class="upload-intro">Choose a recording. We’ll detect speaker turns and transcribe it on this computer, without replacing your current recording.</p>
+    <section id="upload-offline" hidden><p>Uploads need the local processing app. This saved HTML page can display a transcript, but cannot run speech models by itself.</p><a id="upload-open-app" class="button new-recording">Open the local app ↗</a><p class="upload-help">If it is not running, start it from the project folder:</p><code>python scripts/serve_recording_viewer.py --directory data/listening-room/sample-podcast --port 5095</code></section>
+    <form id="upload-form" hidden>
+      <label class="upload-dropzone" for="recording-file"><span class="upload-symbol">↑</span><strong>Choose an audio or meeting recording</strong><span id="upload-types">Checking supported formats…</span><input id="recording-file" type="file" aria-label="Choose a new recording"></label>
+      <p id="upload-selected" class="upload-selected">No file selected</p>
+      <p class="upload-help">English speech recognition · estimated speaker labels · overlap-aware transcript. Longer recordings can take several minutes.</p>
+      <div id="upload-progress-box" hidden><progress id="upload-progress" aria-label="Recording processing"></progress><p id="upload-status" role="status" aria-live="polite"></p></div>
+      <p id="upload-error" class="upload-error" role="alert" hidden></p>
+      <div class="upload-actions"><span>Only sent to your local app.</span><button id="upload-submit" type="submit" class="button new-recording" disabled>Process recording →</button></div>
+    </form>
+  </dialog>
+  <script src="upload.js"></script>
+</body>
+</html>
